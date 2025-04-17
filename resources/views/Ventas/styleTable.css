@@ -1,0 +1,112 @@
+/* Contenedor principal */
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Estilos para la tarjeta */
+.card {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+/* Encabezado de la tarjeta */
+.card-header {
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    color: white;
+    padding: 15px 25px;
+}
+
+/* Título */
+.card-header h4 {
+    margin: 0;
+}
+
+/* Botón de acción */
+.card-header .btn {
+    background-color: #ffffff;
+    color: #007bff;
+    border: none;
+    padding: 8px 12px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+.card-header .btn:hover {
+    background-color: #f0f0f0;
+}
+
+/* Tabla */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.95rem;
+}
+
+.table thead {
+    background: #343a40;
+    color: white;
+}
+
+.table th,
+.table td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.table tbody tr:hover {
+    background-color: #e9f5ff;
+    transition: background 0.3s;
+}
+
+/* Botones de acciones */
+.btn-sm {
+    font-size: 0.8rem;
+    padding: 5px 8px;
+    border-radius: 4px;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+}
+.btn-info:hover {
+    background-color: #138496;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Alertas */
+.alert {
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+}

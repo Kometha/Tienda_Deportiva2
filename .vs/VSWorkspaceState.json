@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app",
+    "\\app\\Http",
+    "\\app\\Http\\Controllers",
+    "\\resources",
+    "\\resources\\views",
+    "\\resources\\views\\Almacen",
+    "\\resources\\views\\Compras",
+    "\\resources\\views\\Reportes",
+    "\\routes"
+  ],
+  "PreviewInSolutionExplorer": false
+}
