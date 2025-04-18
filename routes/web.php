@@ -24,7 +24,7 @@ Route::get('/clientes', [App\Http\Controllers\ClientesController::class, 'index'
 Route::post('/auth/login', [LoginController::class, 'authenticate'])->name('auth.login');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-Route::resource('compras', 'CompraController');
+//Route::resource('compras', 'ComprasController');
 
 
 Route::resource('reportes', ReportesController::class);
