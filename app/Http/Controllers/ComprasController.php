@@ -76,11 +76,24 @@ public function store(Request $request)
     $response = Http::post('http://localhost:3000/compras/RegistrarCompra', $data);
 
     if ($response->successful()) {
-        return redirect()->route('compras')->with('success', 'Compra registrada con éxito.');
+        return redirect()->route('compras')->with('success', '✅Compra registrada con éxito.');
     } else {
         return redirect()->route('compras')->with('error', 'Error al registrar la compra.');
     }
 }
+
+public function getCompraById($id)
+{
+    $url = "http://localhost:3000/compras/MostrarCompraById/$id";
+    $response = Http::get($url);
+
+    if ($response->successful()) {
+        return response()->json($response->json(), 200);
+    } else {
+        return response()->json(['error' => 'No se pudo obtener la compra.'], 500);
+    }
+}
+
 
 
     /**
@@ -110,17 +123,9 @@ public function store(Request $request)
     /**
      * Remove the specified resource from storage.
      */
-
-
-     public function destroy($id)
-     {
-         $response = Http::delete("http://localhost:3000/compras/EliminarCompra/$id");
-     
-         if ($response->successful()) {
-             return redirect()->route('compras')->with('success', 'Compra eliminada correctamente.');
-         } else {
-             return redirect()->route('compras')->with('error', 'No se pudo eliminar la compra.');
-         }
-     }
+    public function destroy(string $id)
+    {
+        //
+    }
 
 }
