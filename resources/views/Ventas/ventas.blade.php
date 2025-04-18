@@ -59,49 +59,50 @@ foreach ($ventasRaw as $venta) {
                 </div>
                 <div class="card-body">
                     <?php if (session('success')): ?>
-                        <div class="alert alert-success"><?= session('success') ?></div>
+                    <div class="alert alert-success"><?= session('success') ?></div>
                     <?php endif; ?>
 
                     <?php if (session('error')): ?>
-                        <div class="alert alert-danger"><?= session('error') ?></div>
+                    <div class="alert alert-danger"><?= session('error') ?></div>
                     <?php endif; ?>
 
                     <div class="table-responsive">
-                    <table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Cliente</th>
-            <th>Fecha</th>
-            <th>Total</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php if (!empty($ventasAgrupadas)): ?>
-            <?php foreach ($ventasAgrupadas as $venta): ?>
-                <tr>
-                    <td><?= $venta['idVenta'] ?></td>
-                    <td><?= $venta['nombreCliente'] . ' ' . $venta['apellidoCliente'] ?></td>
-                    <td><?= date('Y-m-d', strtotime($venta['fechaVenta'])) ?></td>
-                    <td>L. <?= number_format($venta['totalVenta'], 2) ?></td>
-                    <td>
-                    <form method="GET" style="display:inline;">
-    <input type="hidden" name="eliminar" value="<?= $venta['idVenta'] ?>">
-    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Seguro que deseas eliminar esta venta?')">
-        <i class="fas fa-trash"></i>
-    </button>
-</form>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <tr>
-                <td colspan="5" class="text-center">No se pudieron cargar las ventas.</td>
-            </tr>
-        <?php endif; ?>
-    </tbody>
-</table>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Cliente</th>
+                                    <th>Fecha</th>
+                                    <th>Total</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (!empty($ventasAgrupadas)): ?>
+                                <?php foreach ($ventasAgrupadas as $venta): ?>
+                                <tr>
+                                    <td><?= $venta['idVenta'] ?></td>
+                                    <td><?= $venta['nombreCliente'] . ' ' . $venta['apellidoCliente'] ?></td>
+                                    <td><?= date('Y-m-d', strtotime($venta['fechaVenta'])) ?></td>
+                                    <td>L. <?= number_format($venta['totalVenta'], 2) ?></td>
+                                    <td>
+                                        <form method="GET" style="display:inline;">
+                                            <input type="hidden" name="eliminar" value="<?= $venta['idVenta'] ?>">
+                                            <button type="submit" class="btn btn-sm btn-danger"
+                                                onclick="return confirm('¿Seguro que deseas eliminar esta venta?')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                                <?php else: ?>
+                                <tr>
+                                    <td colspan="5" class="text-center">No se pudieron cargar las ventas.</td>
+                                </tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -110,7 +111,8 @@ foreach ($ventasRaw as $venta) {
 </div>
 
 <!-- Modal Nueva Venta -->
-<div class="modal fade" id="modalNuevaVenta" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+<div class="modal fade" id="modalNuevaVenta" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <form method="POST" action="{{ route('ventas.store') }}">
@@ -127,7 +129,8 @@ foreach ($ventasRaw as $venta) {
                         <select class="form-control" name="idCliente" required>
                             <option value="">Seleccione</option>
                             @foreach ($clientes as $cliente)
-                                <option value="{{ $cliente['idCliente'] }}">{{ $cliente['nombreCliente'] }} {{ $cliente['apellidoCliente'] }}</option>
+                            <option value="{{ $cliente['idCliente'] }}">{{ $cliente['nombreCliente'] }}
+                                {{ $cliente['apellidoCliente'] }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -142,12 +145,14 @@ foreach ($ventasRaw as $venta) {
                                 <div class="col">
                                     <select class="form-control" name="productos[0][idProducto]" required>
                                         @foreach ($productos as $producto)
-                                            <option value="{{ $producto['idProducto'] }}">{{ $producto['nombreProducto'] }}</option>
+                                        <option value="{{ $producto['idProducto'] }}">{{ $producto['nombreProducto'] }}
+                                        </option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="col">
-                                    <input type="number" name="productos[0][cantidad]" class="form-control" placeholder="Cantidad" required>
+                                    <input type="number" name="productos[0][cantidad]" class="form-control"
+                                        placeholder="Cantidad" required>
                                 </div>
                             </div>
                         </div>
@@ -168,11 +173,11 @@ foreach ($ventasRaw as $venta) {
 function eliminarVenta(id) {
     // Llamar al endpoint de eliminar
     fetch(`http://localhost:3000/ventas/EliminarVenta/${id}`)
-    .then(response => response.json())
-    .then(data => {
-        // Volver a cargar la página para refrescar la tabla
-        location.reload();
-    })
-    .catch(error => console.error('Error:', error));
+        .then(response => response.json())
+        .then(data => {
+            // Volver a cargar la página para refrescar la tabla
+            location.reload();
+        })
+        .catch(error => console.error('Error:', error));
 }
 </script>
