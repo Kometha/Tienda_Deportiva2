@@ -96,19 +96,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="nombreProveedor">Nombre del Proveedor</label>
                         <input type="text" name="nombreProveedor" class="form-control" placeholder="Nombre" required>
                     </div>
                     <div class="form-group">
-                        <label for="email">Correo Electrónico</label>
                         <input type="email" name="email" class="form-control" placeholder="Email" required>
                     </div>
                     <div class="form-group">
-                        <label for="telefono">Teléfono</label>
                         <input type="text" name="telefono" class="form-control" placeholder="Teléfono" required>
                     </div>
                     <div class="form-group">
-                        <label for="direccion">Dirección</label>
                         <input type="text" name="direccion" class="form-control" placeholder="Dirección" required>
                     </div>
                 </div>
@@ -138,22 +134,18 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="editNombreProveedor">Nombre del Proveedor</label>
                         <input type="text" name="nombreProveedor" class="form-control"
                                value="{{ request('editar_nombre') }}" placeholder="Nombre" required>
                     </div>
                     <div class="form-group">
-                        <label for="editEmail">Correo Electrónico</label>
                         <input type="email" name="email" class="form-control"
                                value="{{ request('editar_email') }}" placeholder="Email" required>
                     </div>
                     <div class="form-group">
-                        <label for="editTelefono">Teléfono</label>
                         <input type="text" name="telefono" class="form-control"
                                value="{{ request('editar_telefono') }}" placeholder="Teléfono" required>
                     </div>
                     <div class="form-group">
-                        <label for="editDireccion">Dirección</label>
                         <input type="text" name="direccion" class="form-control"
                                value="{{ request('editar_direccion') }}" placeholder="Dirección" required>
                     </div>
