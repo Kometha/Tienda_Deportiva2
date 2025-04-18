@@ -69,6 +69,10 @@ $compras = array_values($comprasAgrupadas);
                     <div class="alert alert-danger">{{ $error }}</div>
                     @endif
 
+                    @if(isset($mensajeExito))
+                    <div class="alert alert-success">{{ $mensajeExito }}</div>
+                    @endif
+
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead class="thead-dark">
@@ -219,7 +223,7 @@ $compras = array_values($comprasAgrupadas);
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-success">Guardar</button>
+                    <button type="button" class="btn btn-success" id="btnGuardarEdicion">Guardar</button>
                 </div>
             </form>
         </div>
@@ -229,31 +233,31 @@ $compras = array_values($comprasAgrupadas);
 
 @endsection
 
-<script>
+<!-- <script>
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.btn-editar-compra').forEach(button => {
-        button.addEventListener('click', function() {
-            const id = this.dataset.id;
+            document.querySelectorAll('.btn-editar-compra').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.dataset.id;
 
-            fetch(`http://localhost:3000/compras/MostrarCompraById/${id}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (!data || data.length === 0) return;
+                    fetch(`http://localhost:3000/compras/MostrarCompraById/${id}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (!data || data.length === 0) return;
 
-                    const compra = data[0];
-                    document.getElementById('edit-idCompra').value = compra.idCompra;
-                    document.getElementById('edit-idProveedor').value = compra.idProveedor;
-                    document.getElementById('edit-fechaCompra').value = compra.fechaCompra
-                        .slice(0, 10);
+                            const compra = data[0];
+                            document.getElementById('edit-idCompra').value = compra.idCompra;
+                            document.getElementById('edit-idProveedor').value = compra.idProveedor;
+                            document.getElementById('edit-fechaCompra').value = compra.fechaCompra
+                                .slice(0, 10);
 
-                    const container = document.getElementById('edit-productosContainer');
-                    container.innerHTML = '';
+                            const container = document.getElementById('edit-productosContainer');
+                            container.innerHTML = '';
 
-                    data.forEach((item, index) => {
-                        const row = document.createElement('div');
-                        row.classList.add('form-row', 'mb-2');
+                            data.forEach((item, index) => {
+                                const row = document.createElement('div');
+                                row.classList.add('form-row', 'mb-2');
 
-                        row.innerHTML = `
+                                row.innerHTML = `
                                 <div class="col">
                                     <select class="form-control" name="productos[${index}][idProducto]" required>
                                         @foreach ($productos as $producto)
@@ -269,16 +273,182 @@ document.addEventListener('DOMContentLoaded', function() {
                                 </div>
                             `;
 
-                        container.appendChild(row);
+                                container.appendChild(row);
 
-                        const selector = row.querySelector('select');
-                        if (selector) selector.value = item.idProducto;
+                                const selector = row.querySelector('select');
+                                if (selector) selector.value = item.idProducto;
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error al obtener datos de la compra:', error);
+                        });
+                });
+
+                document.getElementById('btnGuardarEdicion').addEventListener('click', function() {
+                    const idCompra = document.getElementById('edit-idCompra').value;
+                    const idProveedor = document.getElementById('edit-idProveedor').value;
+                    const fechaCompra = document.getElementById('edit-fechaCompra').value;
+
+                    const productos = [];
+                    const filas = document.querySelectorAll('#edit-productosContainer .form-row');
+
+                    filas.forEach(row => {
+                        const idProducto = row.querySelector('select').value;
+                        const cantidad = row.querySelector('input[name*="[cantidad]"]').value;
+                        const precioCompra = row.querySelector('input[name*="[precioCompra]"]')
+                            .value;
+
+                        productos.push({
+                            idProducto: parseInt(idProducto),
+                            cantidad: parseFloat(cantidad),
+                            precioCompra: parseFloat(precioCompra)
+                        });
+                    });
+
+                    const payload = {
+                        idCompra: parseInt(idCompra),
+                        idProveedor: parseInt(idProveedor),
+                        fechaCompra: fechaCompra,
+                        productos: productos
+                    };
+
+                    fetch("http://localhost:3000/compras/EditarCompra", {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(payload)
+                        })
+                        .then(response => {
+                            if (!response.ok) throw new Error("Error al actualizar la compra");
+                            return response.text();
+                        })
+                        .then(data => {
+                            $('#modalEditarCompra').modal('hide');
+                            window.location.href = "{{ route('compras') }}?editado=1";
+                        })
+                        .catch(error => {
+                            console.error('❌ Error al actualizar:', error);
+                            alert("Hubo un error al actualizar la compra.");
+                        });
+                });
+            });
+</script> -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const productosTemplate = @json($productos);
+
+    // Delegación por si los botones se generan dinámicamente
+    document.body.addEventListener('click', function(e) {
+        if (e.target.closest('.btn-editar-compra')) {
+            const button = e.target.closest('.btn-editar-compra');
+            const id = button.dataset.id;
+
+            fetch(`http://localhost:3000/compras/MostrarCompraById/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data || data.length === 0) return;
+
+                    const compra = data[0];
+                    document.getElementById('edit-idCompra').value = compra.idCompra;
+                    document.getElementById('edit-idProveedor').value = compra.idProveedor;
+                    document.getElementById('edit-fechaCompra').value = compra.fechaCompra.slice(0,
+                        10);
+
+                    const container = document.getElementById('edit-productosContainer');
+                    container.innerHTML = '';
+
+                    data.forEach((item, index) => {
+                        const row = document.createElement('div');
+                        row.classList.add('form-row', 'mb-2');
+
+                        const options = productosTemplate.map(p =>
+                            `<option value="${p.idProducto}" ${p.idProducto === item.idProducto ? 'selected' : ''}>
+                                ${p.nombreProducto}
+                            </option>`
+                        ).join('');
+
+                        row.innerHTML = `
+                            <div class="col">
+                                <select class="form-control" name="productos[${index}][idProducto]" required>
+                                    ${options}
+                                </select>
+                            </div>
+                            <div class="col">
+                                <input type="number" name="productos[${index}][cantidad]" class="form-control" value="${item.cantidad}" required>
+                            </div>
+                            <div class="col">
+                                <input type="number" name="productos[${index}][precioCompra]" class="form-control" value="${item.precioCompra}" required>
+                            </div>
+                        `;
+
+                        container.appendChild(row);
                     });
                 })
                 .catch(error => {
                     console.error('Error al obtener datos de la compra:', error);
                 });
+        }
+    });
+
+    // BOTÓN GUARDAR EDICIÓN
+    document.getElementById('btnGuardarEdicion').addEventListener('click', function() {
+        const idCompra = document.getElementById('edit-idCompra').value;
+        const idProveedor = document.getElementById('edit-idProveedor').value;
+        const fechaCompra = document.getElementById('edit-fechaCompra').value;
+
+        const productos = [];
+        const filas = document.querySelectorAll('#edit-productosContainer .form-row');
+
+        filas.forEach(row => {
+            const idProducto = row.querySelector('select').value;
+            const cantidad = row.querySelector('input[name*="[cantidad]"]').value;
+            const precioCompra = row.querySelector('input[name*="[precioCompra]"]').value;
+
+            productos.push({
+                idProducto: parseInt(idProducto),
+                cantidad: parseFloat(cantidad),
+                precioCompra: parseFloat(precioCompra)
+            });
         });
+
+        const payload = {
+            datos: {
+                idCompra: parseInt(idCompra),
+                idProveedor: parseInt(idProveedor),
+                fechaCompra: fechaCompra,
+                productos: productos
+            }
+        };
+
+        fetch("http://localhost:3000/compras/EditarCompra", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(async response => {
+                const text = await response.text();
+                if (!response.ok) {
+                    console.error("❌ Error desde el backend:", text);
+                    throw new Error("Error al editar la compra.");
+                }
+
+                console.log("✅ Respuesta del backend:", text);
+
+                $('#modalEditarCompra').modal('hide');
+
+                // Esperá 600ms antes de redirigir para que puedas ver el log
+                setTimeout(() => {
+                    window.location.href = "{{ route('compras') }}?editado=1";
+                }, 600);
+            })
+            .catch(error => {
+                console.error("❌ Error en fetch:", error);
+                alert("Hubo un error al editar la compra.");
+            });
+
     });
 });
 </script>
