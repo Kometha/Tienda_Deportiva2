@@ -27,26 +27,33 @@ class ComprasController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
-{
-    $compras = [];
-    $respCompras = Http::get('http://localhost:3000/compras/MostrarCompra/0/compras');
+    public function index(Request $request)
+    {
+        $compras = [];
+        $mensajeExito = null;
+
+        if ($request->has('editado')) {
+            $mensajeExito = "✅ Compra editada correctamente.";
+        }
+
+        $respCompras = Http::get('http://localhost:3000/compras/MostrarCompra/0/compras');
         if ($respCompras->successful()) {
             $compras = collect($respCompras->json())->sortByDesc('idCompra')->values()->all();
         }
-    $proveedores = [];
-    $productos = [];
 
-    $respCompras = Http::get('http://localhost:3000/compras/MostrarCompra/0/compras');
-    $respProveedores = Http::get('http://localhost:3000/proveedores/MostrarProveedor/0');
-    $respProductos = Http::get('http://localhost:3000/productos/MostrarProducto/0');
+        $proveedores = [];
+        $productos = [];
 
-    if ($respCompras->successful()) $compras = $respCompras->json();
-    if ($respProveedores->successful()) $proveedores = $respProveedores->json();
-    if ($respProductos->successful()) $productos = $respProductos->json();
+        $respCompras = Http::get('http://localhost:3000/compras/MostrarCompra/0/compras');
+        $respProveedores = Http::get('http://localhost:3000/proveedores/MostrarProveedor/0');
+        $respProductos = Http::get('http://localhost:3000/productos/MostrarProducto/0');
 
-    return view('Compras.compras', compact('compras', 'proveedores', 'productos'));
-}
+        if ($respCompras->successful()) $compras = $respCompras->json();
+        if ($respProveedores->successful()) $proveedores = $respProveedores->json();
+        if ($respProductos->successful()) $productos = $respProductos->json();
+
+        return view('Compras.compras', compact('compras', 'proveedores', 'productos', 'mensajeExito'));
+    }
 
     //public function index()
     //{
