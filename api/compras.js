@@ -7,7 +7,7 @@ module.exports = function(mysqlConnection) {
         const idCompra = req.params.id;
         const tipo = req.params.tipo; // 'compras' o 'detalles'
         const sql = "CALL sp_MostrarCompras(?, ?)";
-        
+
         mysqlConnection.query(sql, [idCompra, tipo], (err, rows, fields) => {
             if (!err) {
                 res.status(200).json(rows[0]);
@@ -17,11 +17,25 @@ module.exports = function(mysqlConnection) {
         });
     });
 
+    // Endpoint para seleccionar una compra en especifico según su ID
+    router.get("/MostrarCompraById/:id", (req, res) => {
+        const idCompra = req.params.id;
+        const sql = "CALL sp_MostrarComprasById(?)";
+
+        mysqlConnection.query(sql, [idCompra], (err, rows, fields) => {
+            if (!err) {
+                res.status(200).json(rows[0]);
+            } else {
+                res.status(500).send("Error al seleccionar la compra.");
+            }
+        });
+    });
+
     // Endpoint para registrar una compra
     router.post("/RegistrarCompra", (req, res) => {
         const compra = req.body;
         const sql = "CALL sp_RegistrarCompra(?, ?, ?)";
-        
+
         console.log("Datos recibidos:", compra);
 
         mysqlConnection.query(
@@ -48,7 +62,7 @@ module.exports = function(mysqlConnection) {
         const compra = req.body;
         const idCompra = req.params.id;
         const sql = "CALL sp_ActualizarCompra(?, ?, ?, ?)";
-        
+
         mysqlConnection.query(
             sql,
             [
@@ -68,14 +82,15 @@ module.exports = function(mysqlConnection) {
     });
 
     // Endpoint para eliminar una compra
-    router.delete("/EliminarCompra/:id", (req, res) => {
+    router.get("/EliminarCompra/:id", (req, res) => {
         const id = req.params.id;
         const sql = "CALL sp_EliminarCompra(?);";
-        
+
         mysqlConnection.query(sql, [id], (err, rows, fields) => {
             if (!err) {
-                res.status(200).send(`Compra con ID ${id} eliminada correctamente!`);
+                res.status(200).send(`✅ Compra con ID ${id} eliminada correctamente!`);
             } else {
+                console.error("❌ Error SQL:", err);
                 res.status(500).send("Error al eliminar compra.");
             }
         });
