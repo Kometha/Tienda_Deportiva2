@@ -1,4 +1,4 @@
-module.exports = function(mysqlConnection) {
+module.exports = function (mysqlConnection) {
     const express = require('express');
     const router = express.Router();
 
@@ -95,6 +95,28 @@ module.exports = function(mysqlConnection) {
             }
         });
     });
+
+    // Endpoint para editar una compra
+    router.put("/EditarCompra", (req, res) => {
+        const compra = req.body;
+
+        // Convertimos todo el objeto en un JSON string
+        const jsonData = JSON.stringify(compra);
+        const sql = "CALL sp_EditarCompra(?)";
+
+        console.log("📝 Editando compra con datos:", jsonData);
+
+        mysqlConnection.query(sql, [jsonData], (err, rows, fields) => {
+            if (!err) {
+                console.log("✅ Compra actualizada:", rows);
+                res.send("Compra actualizada correctamente.");
+            } else {
+                console.error("❌ Error al editar compra:", err);
+                res.status(500).send("Error al editar la compra.");
+            }
+        });
+    });
+
 
     return router;
 };
