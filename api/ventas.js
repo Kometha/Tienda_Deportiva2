@@ -16,7 +16,6 @@ module.exports = function (mysqlConnection) {
             }
         });
     });
-
     // Endpoint para registrar una venta
     router.post("/RegistrarVenta", (req, res) => {
         const venta = req.body;
