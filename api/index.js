@@ -62,8 +62,8 @@ app.use('/otros', otrosRoutes);
 const authRoutes = require('./auth')(mysqlConnection);
  app.use("/auth", authRoutes);
 
-const clientesRoutes = require('./clientes')(mysqlConnection);
-app.use('/clientes', clientesRoutes);
+ const clientesRoutes = require('./clientes')(mysqlConnection);
+ app.use('/clientes', clientesRoutes);
 
 
 
