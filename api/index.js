@@ -2,7 +2,9 @@
 const express = require('express');
 const mysql = require('mysql');
 const app = express();
+const cors = require('cors');
 
+app.use(cors()); // habilita CORS para todas las rutas
 // Configurar el parseo de JSON y URL-encoded
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
