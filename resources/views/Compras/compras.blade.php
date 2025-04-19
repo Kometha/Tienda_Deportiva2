@@ -39,9 +39,12 @@ foreach ($ventasRaw as $venta) {
             'nombreProveedor' => $venta['nombreProveedor'] ?? '',
             'apellidoCliente' => $venta['apellidoCliente'] ?? '',
             'fechaCompra' => $venta['fechaCompra'] ?? '',
-            'totalCompra' => floatval($venta['totalCompra'] ?? 0)
+            'totalCompra' => 0
         ];
     }
+
+    // Sumar subtotales de los productos de la misma compra
+    $comprasAgrupadas[$id]['totalCompra'] += floatval($venta['subtotal'] ?? 0);
 }
 
 $compras = array_values($comprasAgrupadas);
